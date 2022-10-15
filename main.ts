@@ -6,7 +6,9 @@ interface FlowchartJSSettings {
 }
 
 const DEFAULT_SETTINGS: FlowchartJSSettings = {
-	custom_options: "{}",
+	custom_options: `{
+	"scale": 2
+}`,
 };
 
 export default class FlowchartJSPlugin extends Plugin {
@@ -16,18 +18,18 @@ export default class FlowchartJSPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.registerMarkdownCodeBlockProcessor("flow", (source, el, ctx) => {
-			const chart = parse(source);
 			let custom_options;
 
 			try {
 				custom_options = JSON.parse(this.settings.custom_options);
-			} catch (e) {
+			} catch (err) {
+				console.error(err?.message);
+
 				custom_options = {};
 			}
 
-			const canvas = el.createEl("canvas", custom_options);
-
-			chart.drawSVG(canvas);
+			const chart = parse(source);
+			chart.drawSVG(el, custom_options);
 		});
 
 		this.addSettingTab(new FlowchartJsSettingTab(this.app, this));
@@ -35,7 +37,9 @@ export default class FlowchartJSPlugin extends Plugin {
 
 	async loadSettings() {
 		this.settings = Object.assign(
-			{},
+			{
+				scale: 2,
+			},
 			DEFAULT_SETTINGS,
 			await this.loadData()
 		);
@@ -69,7 +73,11 @@ class FlowchartJsSettingTab extends PluginSettingTab {
 			.setName("Custom options")
 			.setDesc("Requires valid JSON")
 			.addTextArea((text) => {
-				text.setPlaceholder("{}")
+				text.setPlaceholder(
+					`{
+	"scale": 2
+}`
+				)
 					.setValue(this.plugin.settings.custom_options)
 					.onChange(async (value) => {
 						this.plugin.settings.custom_options = value;
