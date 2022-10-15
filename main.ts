@@ -17,11 +17,15 @@ export default class FlowchartJSPlugin extends Plugin {
 
 		this.registerMarkdownCodeBlockProcessor("flow", (source, el, ctx) => {
 			const chart = parse(source);
+			let custom_options;
 
-			const canvas = el.createEl(
-				"canvas",
-				JSON.parse(this.settings.custom_options)
-			);
+			try {
+				custom_options = JSON.parse(this.settings.custom_options);
+			} catch (e) {
+				custom_options = {};
+			}
+
+			const canvas = el.createEl("canvas", custom_options);
 
 			chart.drawSVG(canvas);
 		});
