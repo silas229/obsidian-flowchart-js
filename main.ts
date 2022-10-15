@@ -63,15 +63,17 @@ class FlowchartJsSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Custom options")
-			.setDesc("JSON")
-			.addText((text) =>
-				text
-					.setPlaceholder("{}")
+			.setDesc("Requires valid JSON")
+			.addTextArea((text) => {
+				text.setPlaceholder("{}")
 					.setValue(this.plugin.settings.custom_options)
 					.onChange(async (value) => {
 						this.plugin.settings.custom_options = value;
 						await this.plugin.saveSettings();
-					})
-			);
+					});
+
+				text.inputEl.rows = 8;
+				text.inputEl.style.width = "100%";
+			});
 	}
 }
