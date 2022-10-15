@@ -1,9 +1,9 @@
 {
 	"id": "obsidian-flowchart-js",
-	"name": "Obsidian Flowchart.js integration",
+	"name": "Obsidian flowchart.js integration",
 	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "This plugin integrates the Flowchart.js plugin into the Obsidian editor.",
+	"description": "This plugin integrates the flowchart.js plugin into the Obsidian editor.",
 	"author": "Silas_229",
 	"authorUrl": "https://silas229.me",
 	"isDesktopOnly": false
